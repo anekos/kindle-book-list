@@ -11,11 +11,14 @@ TypePath = click.types.Path(path_type=Path)
 
 
 def cleanup_title(s: str) -> str:
+    s = mojimoji.zen_to_han(s, kana=False).strip()
     s = re.sub(r'''\(.+\)''', '', s)
     s = re.sub(r'''（.+）''', '', s)
-    s = re.sub(r'''(?i)(vol\.?)?\d+\s*[巻]?''', '', s)
+    s = re.sub(r'''(?i)(第|vol\.?)?\s*\d+\s*[巻]?.*''', '', s)
     s = re.sub(r'''【.+版】''', '', s)
-    s = mojimoji.zen_to_han(s, kana=False)
+    s = re.sub(r''':''', '', s)
+    s = re.sub(r'''[上下]\s*$''', '', s)
+    s = re.sub(r''' [上下全][巻]? .*$''', '', s)
     return s.strip()
 
 
@@ -38,7 +41,7 @@ def main(xml_file: Path) -> None:
         title = child.find('title')
         assert title is not None
         assert title.text is not None
-        tt = title.text
+        tt = title.text.strip()
         if is_sample(tt):
             continue
         titles.add(cleanup_title(tt))
