@@ -1,7 +1,6 @@
 # kindle-book-list
 
 ```
-$ git clone "$THIS"
 $ pip install -r requirements.txt
 $ python app.py "$HOME/Library/Containers/com.amazon.Kindle/Data/Library/Application Support/Kindle/Cache/KindleSyncMetadataCache.xml"
 Accessible EPUB
